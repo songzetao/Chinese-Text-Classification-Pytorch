@@ -10,9 +10,9 @@ from tensorboardX import SummaryWriter
 
 
 # 权重初始化，默认xavier
-def init_network(model, method='kaiming', exclude='embedding', seed=123):
+def init_network(model, method='xavier', exclude='embedding', seed=123):
     for name, w in model.named_parameters():
-        # print(name, w)
+        print(name)
         if exclude not in name:
             if 'weight' in name:
                 print('w', w)

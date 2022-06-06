@@ -28,7 +28,8 @@ if __name__ == '__main__':
         from utils import build_dataset, build_iterator, get_time_dif
 
     x = import_module('models.' + model_name)
-    config = x.Config(dataset, 'random')
+    print(x)
+    config = x.Config(dataset, embedding)
     np.random.seed(1)
     torch.manual_seed(1)
     # torch.cuda.manual_seed_all(1)
