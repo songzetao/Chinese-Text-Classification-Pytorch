@@ -1,6 +1,6 @@
 # coding: UTF-8
 import os
-import torch
+import oneflow as torch
 import numpy as np
 import pickle as pkl
 from tqdm import tqdm

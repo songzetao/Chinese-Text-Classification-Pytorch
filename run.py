@@ -1,6 +1,6 @@
 # coding: UTF-8
 import time
-import torch
+import oneflow as torch
 import numpy as np
 from train_eval import train, init_network
 from importlib import import_module
@@ -28,10 +28,10 @@ if __name__ == '__main__':
         from utils import build_dataset, build_iterator, get_time_dif
 
     x = import_module('models.' + model_name)
-    config = x.Config(dataset, embedding)
+    config = x.Config(dataset, 'random')
     np.random.seed(1)
     torch.manual_seed(1)
-    torch.cuda.manual_seed_all(1)
+    # torch.cuda.manual_seed_all(1)
     torch.backends.cudnn.deterministic = True  # 保证每次结果一样
 
     start_time = time.time()

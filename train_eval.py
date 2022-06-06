@@ -1,8 +1,8 @@
 # coding: UTF-8
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+import oneflow as torch
+import oneflow.nn as nn
+import oneflow.nn.functional as F
 from sklearn import metrics
 import time
 from utils import get_time_dif
@@ -10,10 +10,12 @@ from tensorboardX import SummaryWriter
 
 
 # 权重初始化，默认xavier
-def init_network(model, method='xavier', exclude='embedding', seed=123):
+def init_network(model, method='kaiming', exclude='embedding', seed=123):
     for name, w in model.named_parameters():
+        # print(name, w)
         if exclude not in name:
             if 'weight' in name:
+                print('w', w)
                 if method == 'xavier':
                     nn.init.xavier_normal_(w)
                 elif method == 'kaiming':
