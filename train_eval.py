@@ -51,10 +51,14 @@ def train(config, model, train_iter, dev_iter, test_iter):
             optimizer.step()
             if total_batch % 100 == 0:
                 # 每多少轮输出在训练集和验证集上的效果
-                true = labels.data.cpu()
-                predic = torch.max(outputs.data, 1)[1].cpu()
+                true = labels.data.cpu().numpy()
+                predic = torch.max(outputs.data, 1)[1].cpu().numpy()
+                # true_array = np.array(true)
+                # predic_array = np.array(predic)
                 train_acc = metrics.accuracy_score(true, predic)
                 dev_acc, dev_loss = evaluate(config, model, dev_iter)
+                print(config.save_path)
+                
                 if dev_loss < dev_best_loss:
                     dev_best_loss = dev_loss
                     torch.save(model.state_dict(), config.save_path)
@@ -66,7 +70,26 @@ def train(config, model, train_iter, dev_iter, test_iter):
                 msg = 'Iter: {0:>6},  Train Loss: {1:>5.2},  Train Acc: {2:>6.2%},  Val Loss: {3:>5.2},  Val Acc: {4:>6.2%},  Time: {5} {6}'
                 print(msg.format(total_batch, loss.item(), train_acc, dev_loss, dev_acc, time_dif, improve))
                 writer.add_scalar("loss/train", loss.item(), total_batch)
-                writer.add_scalar("loss/dev", dev_loss, total_batch)
+                # TODO:bug，暂时注释掉
+                '''
+                Traceback (most recent call last):
+                File "run.py", line 55, in <module>
+                    train(config, model, train_iter, dev_iter, test_iter)
+                File "/workspace/Chinese-Text-Classification-Pytorch/train_eval.py", line 73, in train
+                    writer.add_scalar("loss/dev", dev_loss, total_batch)
+                File "/usr/local/miniconda3/lib/python3.7/site-packages/tensorboardX/writer.py", line 442, in add_scalar
+                    scalar(tag, scalar_value, display_name, summary_description), global_step, walltime)
+                File "/usr/local/miniconda3/lib/python3.7/site-packages/tensorboardX/summary.py", line 152, in scalar
+                    scalar = make_np(scalar)
+                File "/usr/local/miniconda3/lib/python3.7/site-packages/tensorboardX/x2num.py", line 36, in make_np
+                    'Got {}, but expected numpy array or torch tensor.'.format(type(x)))
+                NotImplementedError: Got <class 'oneflow._oneflow_internal.Tensor'>, but expected numpy array or torch tensor.
+
+                使用numpy()函数可以解决此问题   
+                '''
+                print(dev_loss)
+                print(type(dev_loss))
+                writer.add_scalar("loss/dev", dev_loss.item(), total_batch)
                 writer.add_scalar("acc/train", train_acc, total_batch)
                 writer.add_scalar("acc/dev", dev_acc, total_batch)
                 model.train()

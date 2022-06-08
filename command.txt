@@ -1,0 +1,2 @@
+python run.py --model=TextCNN
+python -m debugpy --listen 9248 --wait-for-client run.py --model=TextCNN

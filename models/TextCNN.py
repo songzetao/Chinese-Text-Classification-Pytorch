@@ -16,10 +16,11 @@ class Config(object):
         self.class_list = [x.strip() for x in open(
             dataset + '/data/class.txt', encoding='utf-8').readlines()]              # 类别名单
         self.vocab_path = dataset + '/data/vocab.pkl'                                # 词表
-        self.save_path = dataset + '/saved_dict/' + self.model_name + '.ckpt'        # 模型训练结果
+        self.save_path = dataset + '/saved_dict/'        # 模型训练结果 + self.model_name + '.ckpt' 
         self.log_path = dataset + '/log/' + self.model_name
-        self.embedding_pretrained = torch.tensor(
-            np.load(dataset + '/data/' + embedding)["embeddings"].astype('float32')) if embedding != 'random' else None                                       # 预训练词向量
+        self.embedding_pretrained = None
+
+        # torch.tensor(np.load(dataset + '/data/' + embedding)["embeddings"], dtype=torch.float32) if embedding != 'random' else None                                       # 预训练词向量
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')   # 设备
 
         self.dropout = 0.5                                              # 随机失活
