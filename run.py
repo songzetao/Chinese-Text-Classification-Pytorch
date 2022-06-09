@@ -28,12 +28,11 @@ if __name__ == '__main__':
         from utils import build_dataset, build_iterator, get_time_dif
     
     x = import_module('models.' + model_name)
-    print(x)
-    
+        
     config = x.Config(dataset, embedding)
-    print('teg')
     np.random.seed(1)
     torch.manual_seed(1)
+    # torch.cuda.manual_seed(1)
     # torch.cuda.manual_seed_all(1)
     torch.backends.cudnn.deterministic = True  # 保证每次结果一样
 
@@ -43,6 +42,8 @@ if __name__ == '__main__':
     train_iter = build_iterator(train_data, config)
     dev_iter = build_iterator(dev_data, config)
     test_iter = build_iterator(test_data, config)
+
+    print(test_iter)
     time_dif = get_time_dif(start_time)
     print("Time usage:", time_dif)
 
