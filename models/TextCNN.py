@@ -16,7 +16,7 @@ class Config(object):
         self.class_list = [x.strip() for x in open(
             dataset + '/data/class.txt', encoding='utf-8').readlines()]              # 类别名单
         self.vocab_path = dataset + '/data/vocab.pkl'                                # 词表
-        self.save_path = dataset + '/saved_dict/' + self.model_name       # 模型训练结果 + self.model_name + '.ckpt' 
+        self.save_path = dataset + '/saved_dict/'        # 模型训练结果 + self.model_name + '.ckpt' 
         self.log_path = dataset + '/log/' + self.model_name
         self.embedding_pretrained = None
 
@@ -59,7 +59,6 @@ class Model(nn.Module):
 
     def forward(self, x):
         out = self.embedding(x[0])
-        print(x[0])
         out = out.unsqueeze(1)
         out = torch.cat([self.conv_and_pool(out, conv) for conv in self.convs], 1)
         out = self.dropout(out)
